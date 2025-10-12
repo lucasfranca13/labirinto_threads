@@ -13,7 +13,7 @@ public class MainApp extends Application {
         // FXMLLoader carrega a interface a partir do arquivo FXML.
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("labirinto-view.fxml"));
         // Cria a "Cena" com o layout carregado do FXML, definindo a largura e altura.
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 650, 600);
         // O "Stage" é a janela principal da aplicação.
         stage.setTitle("Labirinto com Threads");
         stage.setScene(scene); // Coloca a cena na janela.

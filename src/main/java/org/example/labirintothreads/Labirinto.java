@@ -68,7 +68,7 @@ public class Labirinto {
 
         // continua enquanto houver celulas na pilha para visitar
         while (!pilha.isEmpty()) {
-            pontoAtual = pilha.peek(); // Pega o ponto atual do topo da pilha
+            pontoAtual = pilha.peek(); // Pega o ponto atual do topo da pilha sem remover o elemento
 
             // Encontra os vizinhos validos
             List<Point> vizinhos = getVizinhosNaoVisitados(pontoAtual);
@@ -134,6 +134,11 @@ public class Labirinto {
         }
 
         return vizinhos;
+    }
+
+    public boolean isMovimentoValido(int x, int y) {
+        TipoCelula tipo = getTipoNaPosicao(x, y);
+        return tipo == TipoCelula.CAMINHO || tipo == TipoCelula.QUEIJO;
     }
 
 }

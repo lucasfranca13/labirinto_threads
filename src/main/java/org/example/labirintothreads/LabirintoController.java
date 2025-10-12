@@ -1,15 +1,24 @@
 package org.example.labirintothreads;
-
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Label;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 
 public class LabirintoController {
 
     private static final int TAMANHO_CELULA = 30; // Células de 25x25 pixels
+
+    private static final int NUMERO_DE_RATOS = 6;
 
     // a anotação @FXML conecta esta variável com o componente que tem o fx:id="gradeLabirinto" no FXML
     @FXML
@@ -17,6 +26,12 @@ public class LabirintoController {
 
     @FXML
     private Button btnIniciar;
+
+    @FXML
+    private Label lblMensagem;
+
+    private Labirinto labirinto;
+    private AtomicBoolean queijoEncontrado;
 
     // chamado automaticamente quando o FXML é carregado
     @FXML
@@ -26,42 +41,99 @@ public class LabirintoController {
 
     @FXML
     protected void iniciarSimulacao() {
+
+        lblMensagem.setStyle("Buscando o queijo...");
+        // Reseta o estilo para o padrão
+        lblMensagem.setStyle("");
         System.out.println("Botão 'Iniciar Simulação' foi clicado!");
 
-        // INSTÂNCIA da classe Labirinto
-        Labirinto labirinto = new Labirinto(20, 15); // Um labirinto de 20 de largura por 15 de altura
+        // 1. Cria a flag de controle compartilhada
+        this.queijoEncontrado = new AtomicBoolean(false);
 
-       desenharLabirinto(labirinto);
+        // 2. Cria e desenha o labirinto
+        this.labirinto = new Labirinto(20, 15);
+        desenharLabirinto();
+
+        // 3. Encontra posições iniciais para os ratos
+        List<Point> posicoesIniciais = encontrarPosicoesVazias(NUMERO_DE_RATOS);
+
+        // 4. Cria e inicia as threads dos ratos
+        for (int i = 0; i < NUMERO_DE_RATOS; i++) {
+            Point posInicial = posicoesIniciais.get(i);
+
+            // Cria a instância do Rato
+            Rato rato = new Rato(i, posInicial, this.labirinto, this, this.queijoEncontrado);
+
+            // Desenha o rato na sua posição inicial
+            desenharElemento(posInicial.x, posInicial.y, Color.BLUE);
+
+            // Inicia a thread do rato!
+            rato.start();
+        }
+    }
+
+    private void desenharElemento(int x, int y, Color cor) {
+        Rectangle retangulo = new Rectangle(TAMANHO_CELULA, TAMANHO_CELULA);
+        retangulo.setFill(cor);
+        gradeLabirinto.add(retangulo, x, y);
+    }
+
+    // --- NOVO METODO AUXILIAR PARA ENCONTRAR POSIÇÕES ---
+    private List<Point> encontrarPosicoesVazias(int quantidade) {
+        List<Point> posicoesVazias = new ArrayList<>();
+        // Primeiro, mapeia todas as posições de CAMINHO
+        for (int y = 0; y < labirinto.getAltura(); y++) {
+            for (int x = 0; x < labirinto.getLargura(); x++) {
+                if (labirinto.getTipoNaPosicao(x, y) == TipoCelula.CAMINHO) {
+                    posicoesVazias.add(new Point(x, y));
+                }
+            }
+        }
+        // Embaralha a lista para pegar posições aleatórias
+        Collections.shuffle(posicoesVazias);
+        // Retorna apenas a quantidade necessária
+        return posicoesVazias.subList(0, quantidade);
     }
 
 
-
-    private void desenharLabirinto(Labirinto labirinto){
-        // limpa qualquer desenho anterior que estava na grade
+    private void desenharLabirinto() {
         gradeLabirinto.getChildren().clear();
-
         int largura = labirinto.getLargura();
         int altura = labirinto.getAltura();
 
-        // percorre cada celula do modelo de dados do labirinto
-        for (int i = 0; i < altura; i++){
-            for (int j = 0; j < largura; j++){
-
-                // Cria um novo retangulo para representar a celula
-                Rectangle retangulo = new Rectangle(TAMANHO_CELULA, TAMANHO_CELULA);
-
-                // Define a cor para cada tipo
-                TipoCelula tipo = labirinto.getTipoNaPosicao(j,i);
-                switch (tipo){
-                    case RATO, INICIO_RATO -> retangulo.setFill(Color.BLUE);
-                    case PAREDE -> retangulo.setFill(Color.BLACK);
-                    case CAMINHO -> retangulo.setFill(Color.WHITE);
-                    case QUEIJO -> retangulo.setFill(Color.YELLOW);
+        for (int y = 0; y < altura; y++) {
+            for (int x = 0; x < largura; x++) {
+                TipoCelula tipo = labirinto.getTipoNaPosicao(x, y);
+                Color cor;
+                switch (tipo) {
+                    case PAREDE -> cor = Color.BLACK;
+                    case CAMINHO -> cor = Color.WHITE;
+                    case QUEIJO -> cor = Color.YELLOW;
+                    default -> cor = Color.LIGHTGRAY; // Cor padrão para outros tipos
                 }
-
-                // adiciona retangulo na grade visual coluna = j, linha = i
-                gradeLabirinto.add(retangulo, j, i);
+                desenharElemento(x, y, cor);
             }
         }
+    }
+
+
+    public void atualizarPosicaoRatoGUI(int idRato, Point posAntiga, Point posNova) {
+        // Pinta a célula antiga com a cor de um caminho visitado (ex: ciano claro)
+        desenharElemento(posAntiga.x, posAntiga.y, Color.CYAN);
+
+        // Pinta a nova célula com a cor do rato
+        desenharElemento(posNova.x, posNova.y, Color.BLUE);
+    }
+
+    public void exibirMensagemVitoria(int idRato) {
+        String mensagem = "O Rato " + idRato + " encontrou o queijo!";
+
+        // Usa Platform.runLater para garantir que a atualização da GUI
+        // seja feita na thread correta do JavaFX.
+        Platform.runLater(() -> {
+            lblMensagem.setText(mensagem);
+            // Adiciona um estilo para destacar a mensagem
+            lblMensagem.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: green;");
+        });
     }
 }
