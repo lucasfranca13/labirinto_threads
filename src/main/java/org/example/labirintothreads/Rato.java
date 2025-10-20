@@ -1,6 +1,6 @@
 package org.example.labirintothreads;
 
-import javafx.application.Platform; // IMPORTANTE!
+import javafx.application.Platform;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class Rato extends Thread {
             try {
                 Thread.sleep(VELOCIDADE_MS);
 
-                // 1. VERIFICA SE ACHOU O QUEIJO
+                // VERIFICA SE ACHOU O QUEIJO
                 if (labirinto.getTipoNaPosicao(posicao.x, posicao.y) == TipoCelula.QUEIJO) {
                     // getAndSet é atômico. Ele define o valor como true e retorna o valor ANTIGO.
                     // Apenas a PRIMEIRA thread a chamar isso receberá 'false' como valor antigo.
@@ -58,7 +58,7 @@ public class Rato extends Thread {
                     break; // Sai do loop
                 }
 
-                // 2. LÓGICA DE MOVIMENTO
+                // LÓGICA DE MOVIMENTO
                 List<Point> vizinhos = buscarVizinhosValidos();
                 Point proximaPosicao;
 
@@ -76,7 +76,7 @@ public class Rato extends Thread {
                     caminhoPercorrido.push(this.posicao); // Guarda a posição atual antes de mover
                 }
 
-                // 3. ATUALIZA O ESTADO E A TELA
+                // ATUALIZA O ESTADO E A TELA
                 Point posAntiga = this.posicao;
                 this.posicao = proximaPosicao;
                 this.celulasVisitadas.add(this.posicao);
