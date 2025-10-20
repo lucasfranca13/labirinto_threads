@@ -51,7 +51,7 @@ public class Rato extends Thread {
                         System.out.println("RATO " + this.id + " ENCONTROU O QUEIJO!");
                         System.out.println("***********************************");
 
-                        // ===== AQUI ESTÁ A MUDANÇA =====
+                        
                         // Chama o controller para exibir a mensagem na tela
                         controller.exibirMensagemVitoria(this.id);
                     }
@@ -63,7 +63,7 @@ public class Rato extends Thread {
                 Point proximaPosicao;
 
                 if (vizinhos.isEmpty()) {
-                    // BECAL SEM SAÍDA: Retroceder (Backtrack)
+                    // BECoSEM SAÍDA: Retroceder (Backtrack)
                     if (caminhoPercorrido.isEmpty()) {
                         // Rato está preso no início, não há para onde retroceder.
                         break;
@@ -95,7 +95,7 @@ public class Rato extends Thread {
     }
 
     /**
-     * Procura por células vizinhas que são CAMINHO ou QUEIJO e que NUNCA foram visitadas por este rato.
+     * Procura por celulas vizinhas que são CAMINHO ou QUEIJO e que NUNCA foram visitadas por este rato.
      */
     private List<Point> buscarVizinhosValidos() {
         List<Point> vizinhos = new ArrayList<>();
