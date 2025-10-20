@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LabirintoController {
 
-    private static final int TAMANHO_CELULA = 30; // Células de 25x25 pixels
+    private static final int TAMANHO_CELULA = 30; 
 
     private static final int NUMERO_DE_RATOS = 6;
 
@@ -47,17 +47,17 @@ public class LabirintoController {
         lblMensagem.setStyle("");
         System.out.println("Botão 'Iniciar Simulação' foi clicado!");
 
-        // 1. Cria a flag de controle compartilhada
+        // Cria a flag de controle compartilhada
         this.queijoEncontrado = new AtomicBoolean(false);
 
-        // 2. Cria e desenha o labirinto
+        // Cria e desenha o labirinto
         this.labirinto = new Labirinto(20, 15);
         desenharLabirinto();
 
-        // 3. Encontra posições iniciais para os ratos
+        // Encontra posições iniciais para os ratos
         List<Point> posicoesIniciais = encontrarPosicoesVazias(NUMERO_DE_RATOS);
 
-        // 4. Cria e inicia as threads dos ratos
+        // Cria e inicia as threads dos ratos
         for (int i = 0; i < NUMERO_DE_RATOS; i++) {
             Point posInicial = posicoesIniciais.get(i);
 
@@ -78,10 +78,10 @@ public class LabirintoController {
         gradeLabirinto.add(retangulo, x, y);
     }
 
-    // --- NOVO METODO AUXILIAR PARA ENCONTRAR POSIÇÕES ---
+    // METODO AUXILIAR PARA ENCONTRAR POSIÇÕES
     private List<Point> encontrarPosicoesVazias(int quantidade) {
         List<Point> posicoesVazias = new ArrayList<>();
-        // Primeiro, mapeia todas as posições de CAMINHO
+        // mapeia todas as posições de CAMINHO
         for (int y = 0; y < labirinto.getAltura(); y++) {
             for (int x = 0; x < labirinto.getLargura(); x++) {
                 if (labirinto.getTipoNaPosicao(x, y) == TipoCelula.CAMINHO) {
@@ -89,9 +89,9 @@ public class LabirintoController {
                 }
             }
         }
-        // Embaralha a lista para pegar posições aleatórias
+        // Embaralha a lista para pegar posições aleatorias
         Collections.shuffle(posicoesVazias);
-        // Retorna apenas a quantidade necessária
+        // Retorna apenas a quantidade necessaria
         return posicoesVazias.subList(0, quantidade);
     }
 
@@ -118,10 +118,10 @@ public class LabirintoController {
 
 
     public void atualizarPosicaoRatoGUI(int idRato, Point posAntiga, Point posNova) {
-        // Pinta a célula antiga com a cor de um caminho visitado (ex: ciano claro)
+        // Pinta a celula antiga com a cor de um caminho visitado ta com ciano claro
         desenharElemento(posAntiga.x, posAntiga.y, Color.CYAN);
 
-        // Pinta a nova célula com a cor do rato
+        // Pinta a nova celula com a cor do rato
         desenharElemento(posNova.x, posNova.y, Color.BLUE);
     }
 
