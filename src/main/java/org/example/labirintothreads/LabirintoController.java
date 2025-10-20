@@ -64,10 +64,10 @@ public class LabirintoController {
             // Cria a instância do Rato
             Rato rato = new Rato(i, posInicial, this.labirinto, this, this.queijoEncontrado);
 
-            // Desenha o rato na sua posição inicial
+            // Desenha o rato na sua posicao inicial
             desenharElemento(posInicial.x, posInicial.y, Color.BLUE);
 
-            // Inicia a thread do rato!
+            // Inicia a thread do rato
             rato.start();
         }
     }
@@ -78,10 +78,10 @@ public class LabirintoController {
         gradeLabirinto.add(retangulo, x, y);
     }
 
-    // METODO AUXILIAR PARA ENCONTRAR POSIÇÕES
+    // METODO AUXILIAR PARA ENCONTRAR POSICOES
     private List<Point> encontrarPosicoesVazias(int quantidade) {
         List<Point> posicoesVazias = new ArrayList<>();
-        // mapeia todas as posições de CAMINHO
+        // mapeia todas as posicoes de CAMINHO
         for (int y = 0; y < labirinto.getAltura(); y++) {
             for (int x = 0; x < labirinto.getLargura(); x++) {
                 if (labirinto.getTipoNaPosicao(x, y) == TipoCelula.CAMINHO) {
@@ -109,7 +109,7 @@ public class LabirintoController {
                     case PAREDE -> cor = Color.BLACK;
                     case CAMINHO -> cor = Color.WHITE;
                     case QUEIJO -> cor = Color.YELLOW;
-                    default -> cor = Color.LIGHTGRAY; // Cor padrão para outros tipos
+                    default -> cor = Color.LIGHTGRAY; // Cor padrao para outros tipos
                 }
                 desenharElemento(x, y, cor);
             }
