@@ -33,7 +33,7 @@ public class LabirintoController {
     private Labirinto labirinto;
     private AtomicBoolean queijoEncontrado;
 
-    // chamado automaticamente quando o FXML é carregado
+    // chamado automaticamente quando o FXML e carregado
     @FXML
     public void initialize() {
         System.out.println("Controller inicializado! A interface está pronta.");
@@ -61,7 +61,7 @@ public class LabirintoController {
         for (int i = 0; i < NUMERO_DE_RATOS; i++) {
             Point posInicial = posicoesIniciais.get(i);
 
-            // Cria a instância do Rato
+            // Cria a instancia do Rato
             Rato rato = new Rato(i, posInicial, this.labirinto, this, this.queijoEncontrado);
 
             // Desenha o rato na sua posicao inicial
@@ -89,7 +89,7 @@ public class LabirintoController {
                 }
             }
         }
-        // Embaralha a lista para pegar posições aleatorias
+        // Embaralha a lista para pegar posicoes aleatorias
         Collections.shuffle(posicoesVazias);
         // Retorna apenas a quantidade necessaria
         return posicoesVazias.subList(0, quantidade);
