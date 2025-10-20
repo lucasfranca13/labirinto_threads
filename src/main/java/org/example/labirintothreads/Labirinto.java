@@ -1,7 +1,7 @@
 package org.example.labirintothreads;
 
 import javafx.scene.effect.Light;
-import java.awt.Point; // Uma classe simples do Java para guardar coordenadas (x, y)
+import java.awt.Point; 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,7 +62,7 @@ public class Labirinto {
         int startY = 1;
         Point pontoAtual = new Point(startX, startY);
 
-        // Marca o ponto inicial como caminho e adicione à pilha
+        // Marca o ponto inicial como caminho e adiciona na pilha
         setTipoNaPosicao(pontoAtual.x, pontoAtual.y, TipoCelula.CAMINHO);
         pilha.push(pontoAtual);
 
@@ -75,10 +75,10 @@ public class Labirinto {
 
             if (!vizinhos.isEmpty()) {
                 // se existem vizinhos escolhe um aleatoriamente
-                Collections.shuffle(vizinhos); // Embaralha a lista para pegar um aleatório
+                Collections.shuffle(vizinhos); // Embaralha a lista para pegar um aleatorio
                 Point proximoPonto = vizinhos.get(0);
 
-                // "escava" o caminho entre o ponto atual e o próximo
+                // "escava" o caminho entre o ponto atual e o proximo
                 int entreX = (pontoAtual.x + proximoPonto.x) / 2;
                 int entreY = (pontoAtual.y + proximoPonto.y) / 2;
                 setTipoNaPosicao(entreX, entreY, TipoCelula.CAMINHO);
