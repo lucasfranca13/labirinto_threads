@@ -1,9 +1,5 @@
-Com certeza! Adicionar emojis de forma estratégica pode deixar o README mais moderno e fácil de ler, sem perder a profissionalidade.
-
-Aqui está a versão estilizada.
-
 🚀 Labirinto com Threads em JavaFX
-(Substitua o link acima por um GIF do seu projeto em execução. Este é o elemento mais importante do seu portfólio!)
+
 
 1. 📝 Resumo do Projeto
 Aplicação visual desenvolvida em Java e JavaFX que simula um cenário de concorrência. Múltiplos "Ratos", cada um representado por uma Thread independente, buscam simultaneamente por um queijo dentro de um labirinto gerado aleatoriamente.
@@ -58,11 +54,10 @@ Clone o repositório:
 
 Bash
 
-git clone https://github.com/seu-usuario/seu-repositorio.git
-Abra na sua IDE:
+git clone https://github.com/lucasfranca13/labirinto_threads.git
 
+Abra na sua IDE:
 Importe o projeto como um projeto Maven em uma IDE como IntelliJ IDEA ou Eclipse. A IDE irá baixar as dependências do JavaFX automaticamente.
 
 Execute:
-
 Localize e execute a classe MainApp.java.
